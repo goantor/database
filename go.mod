@@ -1,4 +1,4 @@
-module github.com/goantor/database
+module github.comt/goantor/database
 
 go 1.19
 
