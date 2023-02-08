@@ -38,7 +38,6 @@ func NewRedis(opt *RedisOption) (*redis.Client, error) {
 }
 
 func (r *Redis) Boot() (err error) {
-	fmt.Println(r.opt.Link())
 	r.entity = redis.NewClient(&redis.Options{
 		Addr:     r.opt.Link(),
 		Password: r.opt.Password,
