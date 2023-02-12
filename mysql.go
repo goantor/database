@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 	"time"
 )
@@ -53,17 +54,25 @@ func NewMysql(opt *MysqlOption) (db *gorm.DB, err error) {
 }
 
 func (m *Mysql) Boot() (err error) {
-	m.entity, err = gorm.Open(mysql.Open(m.opt.Link()), &gorm.Config{
+
+	config := &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
-	})
+	}
+
+	if m.opt.Debug {
+		config.Logger = logger.Default.LogMode(logger.Info)
+	}
+
+	m.entity, err = gorm.Open(mysql.Open(m.opt.Link()), config)
 
 	if err != nil {
 		return
 	}
 
 	if m.opt.Debug {
+
 		m.entity.Debug()
 	}
 
